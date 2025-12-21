@@ -1,12 +1,127 @@
-body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-.container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
-.input-section { display: flex; gap: 10px; margin-bottom: 20px; }
-input, select, button { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-button { background: #5c67f2; color: white; cursor: pointer; border: none; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+:root {
+    --primary: #6366f1;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --high: #ef4444;
+    --med: #f59e0b;
+    --low: #10b981;
+}
 
-/* Priority Tags */
-.prio-3 { color: #d9534f; font-weight: bold; } /* High - Red */
-.prio-2 { color: #f0ad4e; font-weight: bold; } /* Medium - Orange */
-.prio-1 { color: #5cb85c; font-weight: bold; } /* Low - Green */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header h1 { margin: 0; font-weight: 700; color: #0f172a; }
+
+/* The Input Card */
+.input-card {
+    background: var(--card);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 30px;
+}
+
+.input-card input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline-color: var(--primary);
+}
+
+.add-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.add-btn:hover { transform: translateY(-1px); background: #4f46e5; }
+
+/* The Table */
+.table-container {
+    background: var(--card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f1f5f9;
+    padding: 16px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Priority Pills */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.prio-3 { background: #fee2e2; color: var(--high); }
+.prio-2 { background: #fef3c7; color: var(--med); }
+.prio-1 { background: #dcfce7; color: var(--low); }
+
+.done-btn {
+    background: none;
+    border: 1px solid #e2e8f0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #94a3b8;
+}
+
+.done-btn:hover { background: #fee2e2; border-color: #fca5a5; color: var(--high); }
