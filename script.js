@@ -1,64 +1,81 @@
-// Load data from LocalStorage when the page opens
+// 1. Initialize data from LocalStorage
 let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
 
-// Set current date in header
-document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+// 2. Display the current date in the header
+document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { 
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+});
 
+// 3. Main function to add a task
 function addAssignment() {
     const name = document.getElementById('taskInput').value;
     const date = document.getElementById('dateInput').value;
     const priority = document.getElementById('priorityInput').value;
 
-    if (!name || !date) return alert("Please enter the assignment name and due date.");
+    if (!name || !date) {
+        alert("Please fill in both the assignment name and the due date.");
+        return;
+    }
 
-    const task = { 
-        name, 
-        date, 
-        priority: parseInt(priority), 
-        id: Date.now() 
+    const newTask = {
+        id: Date.now(),
+        name: name,
+        date: date,
+        priority: parseInt(priority)
     };
 
-    assignments.push(task);
+    assignments.push(newTask);
     saveAndRender();
     
-    // Clear inputs
+    // Clear inputs for next entry
     document.getElementById('taskInput').value = '';
     document.getElementById('dateInput').value = '';
 }
 
+// 4. Sort and Save function
 function saveAndRender() {
-    // Sort by date
-    assignments.sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-    // Save to local storage
+    // MULTI-LEVEL SORT: Date first, then Priority
+    assignments.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+
+        if (dateA - dateB !== 0) {
+            return dateA - dateB; // Sort by earliest date
+        }
+        // If dates are the same, sort by priority (High 3 to Low 1)
+        return b.priority - a.priority;
+    });
+
     localStorage.setItem('assignments', JSON.stringify(assignments));
-    
-    renderTasks();
+    renderTable();
 }
 
-function renderTasks() {
+// 5. Update the HTML table
+function renderTable() {
     const list = document.getElementById('taskList');
     list.innerHTML = "";
 
     assignments.forEach(task => {
-        const priorityLabel = task.priority === 3 ? "High" : task.priority === 2 ? "Medium" : "Low";
+        const priorityText = task.priority === 3 ? "High" : task.priority === 2 ? "Medium" : "Low";
+        
         list.innerHTML += `
             <tr>
                 <td style="font-weight: 600;">${task.name}</td>
-                <td style="color: #64748b;">${task.date}</td>
-                <td><span class="badge prio-${task.priority}">${priorityLabel}</span></td>
+                <td>${task.date}</td>
+                <td><span class="badge prio-${task.priority}">${priorityText}</span></td>
                 <td style="text-align: right;">
-                    <button class="done-btn" onclick="deleteTask(${task.id})">Remove</button>
+                    <button class="done-btn" onclick="deleteTask(${task.id})">Complete</button>
                 </td>
             </tr>
         `;
     });
 }
 
+// 6. Delete function
 function deleteTask(id) {
-    assignments = assignments.filter(t => t.id !== id);
+    assignments = assignments.filter(task => task.id !== id);
     saveAndRender();
 }
 
-// Run render on load
-renderTasks();
+// Initial render when the page first loads
+renderTable();
