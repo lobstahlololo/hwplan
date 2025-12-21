@@ -1,0 +1,12 @@
+body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+.container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+.input-section { display: flex; gap: 10px; margin-bottom: 20px; }
+input, select, button { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+button { background: #5c67f2; color: white; cursor: pointer; border: none; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+
+/* Priority Tags */
+.prio-3 { color: #d9534f; font-weight: bold; } /* High - Red */
+.prio-2 { color: #f0ad4e; font-weight: bold; } /* Medium - Orange */
+.prio-1 { color: #5cb85c; font-weight: bold; } /* Low - Green */
