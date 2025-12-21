@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Assignment Tracker</h1>
+        
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Assignment Name">
+            <input type="date" id="dateInput">
+            <select id="priorityInput">
+                <option value="3">High</option>
+                <option value="2">Medium</option>
+                <option value="1">Low</option>
+            </select>
+            <button onclick="addAssignment()">Add Task</button>
+        </div>
+
+        <table id="assignmentTable">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="taskList"></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
