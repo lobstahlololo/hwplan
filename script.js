@@ -1,17 +1,37 @@
-let assignments = [];
+// Load data from LocalStorage when the page opens
+let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
+
+// Set current date in header
+document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
 function addAssignment() {
     const name = document.getElementById('taskInput').value;
     const date = document.getElementById('dateInput').value;
     const priority = document.getElementById('priorityInput').value;
 
-    if (!name || !date) return alert("Please fill in all fields");
+    if (!name || !date) return alert("Please enter the assignment name and due date.");
 
-    const task = { name, date, priority: parseInt(priority), id: Date.now() };
+    const task = { 
+        name, 
+        date, 
+        priority: parseInt(priority), 
+        id: Date.now() 
+    };
+
     assignments.push(task);
+    saveAndRender();
     
-    // Automated Sorting by Due Date
+    // Clear inputs
+    document.getElementById('taskInput').value = '';
+    document.getElementById('dateInput').value = '';
+}
+
+function saveAndRender() {
+    // Sort by date
     assignments.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Save to local storage
+    localStorage.setItem('assignments', JSON.stringify(assignments));
     
     renderTasks();
 }
@@ -21,13 +41,15 @@ function renderTasks() {
     list.innerHTML = "";
 
     assignments.forEach(task => {
-        const priorityText = task.priority === 3 ? "High" : task.priority === 2 ? "Medium" : "Low";
+        const priorityLabel = task.priority === 3 ? "High" : task.priority === 2 ? "Medium" : "Low";
         list.innerHTML += `
             <tr>
-                <td>${task.name}</td>
-                <td>${task.date}</td>
-                <td class="prio-${task.priority}">${priorityText}</td>
-                <td><button onclick="deleteTask(${task.id})" style="background:#ff4d4d">Done</button></td>
+                <td style="font-weight: 600;">${task.name}</td>
+                <td style="color: #64748b;">${task.date}</td>
+                <td><span class="badge prio-${task.priority}">${priorityLabel}</span></td>
+                <td style="text-align: right;">
+                    <button class="done-btn" onclick="deleteTask(${task.id})">Remove</button>
+                </td>
             </tr>
         `;
     });
@@ -35,5 +57,8 @@ function renderTasks() {
 
 function deleteTask(id) {
     assignments = assignments.filter(t => t.id !== id);
-    renderTasks();
+    saveAndRender();
 }
+
+// Run render on load
+renderTasks();
