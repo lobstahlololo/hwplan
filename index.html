@@ -8,18 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="dashboard-wrapper">
-        <aside class="sidebar">
-            <div class="logo">StudyFlow</div>
-            <nav class="side-nav">
-                <button class="nav-item active" onclick="showTab('tracker', event)">
-                    <span>Assignments</span>
-                </button>
-                <button class="nav-item" onclick="showTab('timer', event)">
-                    <span>Focus Timer</span>
-                </button>
-            </nav>
-        </aside>
+    <aside class="sidebar">
+    <div class="logo">Study</div>
+    <nav class="side-nav">
+        <button class="nav-item active" onclick="showTab('tracker', event)">
+            Assignments
+        </button>
+        <button class="nav-item" onclick="showTab('timer', event)">
+            Focus Timer
+        </button>
+    </nav>
+</aside>
 
         <main class="main-content">
             <section id="tracker-tab" class="tab-section active">
@@ -52,3 +51,4 @@
                             </tr>
                         </thead>
                         <tbody id="taskList">
+
