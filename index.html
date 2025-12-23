@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment Tracker</title>
+    <title>Dashboard | Tracker & Timer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -19,58 +19,39 @@
                 <h1>My Assignments</h1>
                 <p id="date-display"></p>
             </header>
+            
             <div class="input-card">
+                <input type="text" id="taskInput" placeholder="What needs to be done?">
+                <div class="input-row">
+                    <input type="date" id="dateInput">
+                    <select id="priorityInput">
+                        <option value="3">High Priority</option>
+                        <option value="2">Medium Priority</option>
+                        <option value="1">Low Priority</option>
+                    </select>
+                    <button onclick="addAssignment()" class="add-btn">Add Task</button>
                 </div>
+            </div>
+
             <div class="table-container">
-                <table id="assignmentTable">
-                    </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Due Date</th>
+                            <th>Priority</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskList"></tbody>
+                </table>
             </div>
         </div>
 
-    <div id="timer-tab" class="tab-content">
-        <header>
-            <h1>Study Timer</h1>
-            <p>Focus for 25 minutes</p>
-        </header>
-        <div class="timer-card">
-            <div id="timer-display">25:00</div>
-            <div class="timer-controls">
-                <button onclick="toggleTimer()" id="start-btn">Start</button>
-                <button onclick="resetTimer()" id="reset-btn">Reset</button>
-            </div>
-        </div>
-    </div>
-</div>
-        
-        <div class="input-card">
-            <input type="text" id="taskInput" placeholder="What's the assignment?">
-            <div class="input-row">
-                <input type="date" id="dateInput">
-                <select id="priorityInput">
-                    <option value="3">High Priority</option>
-                    <option value="2">Medium Priority</option>
-                    <option value="1">Low Priority</option>
-                </select>
-                <button onclick="addAssignment()" class="add-btn">Add Task</button>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table id="assignmentTable">
-                <thead>
-                    <tr>
-                        <th>Assignment</th>
-                        <th>Due Date</th>
-                        <th>Priority</th>
-                        <th style="text-align: right;">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="taskList">
-                    </tbody>
-            </table>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
-
+        <div id="timer-tab" class="tab-content">
+            <header>
+                <h1>Study Timer</h1>
+                <p>Stay focused for 25 minutes</p>
+            </header>
+            <div class="timer-card">
+                <div id="timer-display">2
