@@ -1,30 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Load Initial Data
     let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
     
-    const dateDisplay = document.getElementById('date-display');
-    if(dateDisplay) {
-        dateDisplay.innerText = new Date().toLocaleDateString(undefined, { 
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-        });
-    }
+    // Set Date
+    const dateEl = document.getElementById('date-display');
+    if(dateEl) dateEl.innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-    // --- TAB SYSTEM ---
+    // Tabs
     window.showTab = function(tabId, event) {
         document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-        
         document.getElementById(tabId + '-tab').classList.add('active');
         event.currentTarget.classList.add('active');
     };
 
-    // --- ASSIGNMENT LOGIC ---
+    // Tracker
     window.addAssignment = function() {
         const name = document.getElementById('taskInput').value;
         const date = document.getElementById('dateInput').value;
         const priority = parseInt(document.getElementById('priorityInput').value);
 
-        if (!name || !date) return alert("Please enter name and date!");
+        if (!name || !date) return alert("Please fill in everything.");
 
         assignments.push({ id: Date.now(), name, date, priority });
         saveAndRender();
@@ -45,17 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTable() {
         const list = document.getElementById('taskList');
-        if (!list) return;
+        if(!list) return;
         list.innerHTML = "";
         assignments.forEach(task => {
-            const pNames = {3: 'High', 2: 'Medium', 1: 'Low'};
+            const pLabels = {3: 'High', 2: 'Medium', 1: 'Low'};
             list.innerHTML += `
                 <tr>
                     <td style="font-weight:600">${task.name}</td>
                     <td>${task.date}</td>
-                    <td><span class="badge prio-${task.priority}">${pNames[task.priority]}</span></td>
+                    <td><span class="badge prio-${task.priority}">${pLabels[task.priority]}</span></td>
                     <td style="text-align:right">
-                        <button onclick="deleteTask(${task.id})" class="btn-secondary" style="color:#ef4444; padding:5px 10px;">Done</button>
+                        <button onclick="deleteTask(${task.id})" class="btn-secondary" style="color:#ef4444">Done</button>
                     </td>
                 </tr>`;
         });
@@ -66,9 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         saveAndRender();
     };
 
-    // --- TIMER LOGIC ---
+    // Timer
     let timer;
-    let timeLeft = 1500; 
+    let timeLeft = 1500;
     let isRunning = false;
 
     window.toggleTimer = function() {
@@ -84,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateTimerUI();
                 } else {
                     clearInterval(timer);
-                    alert("Done!");
+                    alert("Focus session complete!");
                     resetTimer();
                 }
             }, 1000);
@@ -108,5 +103,5 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('start-btn').innerText = "Start";
     };
 
-    renderTable(); // Initial draw
+    renderTable();
 });
