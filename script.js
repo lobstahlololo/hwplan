@@ -1,121 +1,93 @@
-// 1. Initialize data from LocalStorage
+// Data Initialization
 let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
+document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
 
-// 2. Display the current date in the header
-document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { 
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-});
+// --- TAB SYSTEM ---
+function showTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    document.getElementById(tabName + '-tab').classList.add('active');
+    event.currentTarget.classList.add('active');
+}
 
-// 3. Main function to add a task
+// --- TRACKER LOGIC ---
 function addAssignment() {
     const name = document.getElementById('taskInput').value;
     const date = document.getElementById('dateInput').value;
-    const priority = document.getElementById('priorityInput').value;
+    const priority = parseInt(document.getElementById('priorityInput').value);
 
-    if (!name || !date) {
-        alert("Please fill in both the assignment name and the due date.");
-        return;
-    }
+    if (!name || !date) return alert("Fill in all fields!");
 
-    const newTask = {
-        id: Date.now(),
-        name: name,
-        date: date,
-        priority: parseInt(priority)
-    };
-
-    assignments.push(newTask);
+    assignments.push({ id: Date.now(), name, date, priority });
     saveAndRender();
     
-    // Clear inputs for next entry
     document.getElementById('taskInput').value = '';
     document.getElementById('dateInput').value = '';
 }
 
-// 4. Sort and Save function
 function saveAndRender() {
-    // MULTI-LEVEL SORT: Date first, then Priority
+    // Sort by Date, then by Priority
     assignments.sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
-
-        if (dateA - dateB !== 0) {
-            return dateA - dateB; // Sort by earliest date
-        }
-        // If dates are the same, sort by priority (High 3 to Low 1)
-        return b.priority - a.priority;
+        if (dateA - dateB !== 0) return dateA - dateB;
+        return b.priority - a.priority; // Higher priority (3) first
     });
 
     localStorage.setItem('assignments', JSON.stringify(assignments));
     renderTable();
 }
 
-// 5. Update the HTML table
 function renderTable() {
     const list = document.getElementById('taskList');
     list.innerHTML = "";
-
     assignments.forEach(task => {
-        const priorityText = task.priority === 3 ? "High" : task.priority === 2 ? "Medium" : "Low";
-        
+        const pLabels = {3: "High", 2: "Medium", 1: "Low"};
         list.innerHTML += `
             <tr>
-                <td style="font-weight: 600;">${task.name}</td>
-                <td>${task.date}</td>
-                <td><span class="badge prio-${task.priority}">${priorityText}</span></td>
-                <td style="text-align: right;">
-                    <button class="done-btn" onclick="deleteTask(${task.id})">Complete</button>
-                </td>
-            </tr>
-        `;
+                <td style="font-weight:600">${task.name}</td>
+                <td style="color:#64748b">${task.date}</td>
+                <td><span class="badge prio-${task.priority}">${pLabels[task.priority]}</span></td>
+                <td style="text-align:right"><button class="add-btn" style="background:#fee2e2; color:#ef4444; padding:5px 10px" onclick="deleteTask(${task.id})">Done</button></td>
+            </tr>`;
     });
 }
 
-// 6. Delete function
 function deleteTask(id) {
-    assignments = assignments.filter(task => task.id !== id);
+    assignments = assignments.filter(t => t.id !== id);
     saveAndRender();
 }
-// --- Tab Switching Logic ---
-function showTab(tabName) {
-    // Hide all contents
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-    // Show selected
-    document.getElementById(tabName + '-tab').classList.add('active');
-    event.currentTarget.classList.add('active');
-}
-
-// --- Pomodoro Timer Logic ---
+// --- TIMER LOGIC ---
 let timer;
-let timeLeft = 1500; // 25 minutes in seconds
+let timeLeft = 1500;
 let isRunning = false;
 
-function updateTimerDisplay() {
-    const mins = Math.floor(timeLeft / 60);
-    const secs = timeLeft % 60;
-    document.getElementById('timer-display').innerText = 
-        `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
 function toggleTimer() {
+    const btn = document.getElementById('start-btn');
     if (isRunning) {
         clearInterval(timer);
-        document.getElementById('start-btn').innerText = "Start";
+        btn.innerText = "Start Session";
     } else {
         timer = setInterval(() => {
             timeLeft--;
             updateTimerDisplay();
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                alert("Time's up! Take a break.");
+                alert("Session complete! Time for a break.");
                 resetTimer();
             }
         }, 1000);
-        document.getElementById('start-btn').innerText = "Pause";
+        btn.innerText = "Pause";
     }
     isRunning = !isRunning;
+}
+
+function updateTimerDisplay() {
+    const mins = Math.floor(timeLeft / 60);
+    const secs = timeLeft % 60;
+    document.getElementById('timer-display').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
 function resetTimer() {
@@ -123,9 +95,8 @@ function resetTimer() {
     isRunning = false;
     timeLeft = 1500;
     updateTimerDisplay();
-    document.getElementById('start-btn').innerText = "Start";
+    document.getElementById('start-btn').innerText = "Start Session";
 }
 
-// Initial render when the page first loads
+// Run on load
 renderTable();
-
