@@ -9,10 +9,38 @@
 </head>
 <body>
     <div class="app-container">
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('tracker')">Assignments</button>
+            <button class="tab-btn" onclick="showTab('timer')">Study Timer</button>
+        </nav>
+
+        <div id="tracker-tab" class="tab-content active">
+            <header>
+                <h1>My Assignments</h1>
+                <p id="date-display"></p>
+            </header>
+            <div class="input-card">
+                </div>
+            <div class="table-container">
+                <table id="assignmentTable">
+                    </table>
+            </div>
+        </div>
+
+    <div id="timer-tab" class="tab-content">
         <header>
-            <h1>My Assignments</h1>
-            <p id="date-display"></p>
+            <h1>Study Timer</h1>
+            <p>Focus for 25 minutes</p>
         </header>
+        <div class="timer-card">
+            <div id="timer-display">25:00</div>
+            <div class="timer-controls">
+                <button onclick="toggleTimer()" id="start-btn">Start</button>
+                <button onclick="resetTimer()" id="reset-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
         
         <div class="input-card">
             <input type="text" id="taskInput" placeholder="What's the assignment?">
@@ -45,3 +73,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
