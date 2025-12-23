@@ -28,6 +28,60 @@ header {
     margin-bottom: 30px;
     text-align: center;
 }
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: #e2e8f0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #64748b;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Timer Styling */
+.timer-card {
+    background: var(--card);
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+#timer-display {
+    font-size: 80px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--primary);
+}
+
+.timer-controls button {
+    margin: 0 10px;
+    padding: 12px 30px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#start-btn { background: var(--primary); color: white; }
+#reset-btn { background: #f1f5f9; color: var(--text); }
 
 header h1 { margin: 0; font-weight: 700; color: #0f172a; }
 
@@ -125,3 +179,4 @@ td {
 }
 
 .done-btn:hover { background: #fee2e2; border-color: #fca5a5; color: var(--high); }
+
