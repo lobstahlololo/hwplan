@@ -1,27 +1,29 @@
-// Data Initialization
 let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
-document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-// --- TAB SYSTEM ---
-function showTab(tabName) {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    
-    document.getElementById(tabName + '-tab').classList.add('active');
+// --- SIDEBAR TAB SWITCHER ---
+function showTab(tabId, event) {
+    // Hide all sections
+    document.querySelectorAll('.tab-section').forEach(section => section.classList.remove('active'));
+    // Deactivate all nav buttons
+    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+    // Show selected section
+    document.getElementById(tabId + '-tab').classList.add('active');
+    // Highlight clicked button
     event.currentTarget.classList.add('active');
 }
 
-// --- TRACKER LOGIC ---
+// --- ASSIGNMENT LOGIC ---
 function addAssignment() {
     const name = document.getElementById('taskInput').value;
     const date = document.getElementById('dateInput').value;
     const priority = parseInt(document.getElementById('priorityInput').value);
 
-    if (!name || !date) return alert("Fill in all fields!");
+    if (!name || !date) return alert("Please fill in all fields.");
 
     assignments.push({ id: Date.now(), name, date, priority });
     saveAndRender();
-    
     document.getElementById('taskInput').value = '';
     document.getElementById('dateInput').value = '';
 }
@@ -29,10 +31,10 @@ function addAssignment() {
 function saveAndRender() {
     // Sort by Date, then by Priority
     assignments.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        if (dateA - dateB !== 0) return dateA - dateB;
-        return b.priority - a.priority; // Higher priority (3) first
+        const d1 = new Date(a.date);
+        const d2 = new Date(b.date);
+        if (d1 - d2 !== 0) return d1 - d2;
+        return b.priority - a.priority;
     });
 
     localStorage.setItem('assignments', JSON.stringify(assignments));
@@ -43,13 +45,16 @@ function renderTable() {
     const list = document.getElementById('taskList');
     list.innerHTML = "";
     assignments.forEach(task => {
-        const pLabels = {3: "High", 2: "Medium", 1: "Low"};
+        const prioNames = {3: 'High', 2: 'Medium', 1: 'Low'};
+        const prioClass = {3: 'prio-3', 2: 'prio-2', 1: 'prio-1'}; // Use your existing badge classes
         list.innerHTML += `
             <tr>
                 <td style="font-weight:600">${task.name}</td>
-                <td style="color:#64748b">${task.date}</td>
-                <td><span class="badge prio-${task.priority}">${pLabels[task.priority]}</span></td>
-                <td style="text-align:right"><button class="add-btn" style="background:#fee2e2; color:#ef4444; padding:5px 10px" onclick="deleteTask(${task.id})">Done</button></td>
+                <td>${task.date}</td>
+                <td><span class="badge ${prioClass[task.priority]}">${prioNames[task.priority]}</span></td>
+                <td style="text-align:right">
+                    <button onclick="deleteTask(${task.id})" class="btn-secondary" style="color:#ef4444">Done</button>
+                </td>
             </tr>`;
     });
 }
@@ -68,14 +73,14 @@ function toggleTimer() {
     const btn = document.getElementById('start-btn');
     if (isRunning) {
         clearInterval(timer);
-        btn.innerText = "Start Session";
+        btn.innerText = "Start";
     } else {
         timer = setInterval(() => {
             timeLeft--;
             updateTimerDisplay();
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                alert("Session complete! Time for a break.");
+                alert("Study session over!");
                 resetTimer();
             }
         }, 1000);
@@ -85,9 +90,9 @@ function toggleTimer() {
 }
 
 function updateTimerDisplay() {
-    const mins = Math.floor(timeLeft / 60);
-    const secs = timeLeft % 60;
-    document.getElementById('timer-display').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
 function resetTimer() {
@@ -95,8 +100,7 @@ function resetTimer() {
     isRunning = false;
     timeLeft = 1500;
     updateTimerDisplay();
-    document.getElementById('start-btn').innerText = "Start Session";
+    document.getElementById('start-btn').innerText = "Start";
 }
 
-// Run on load
 renderTable();
