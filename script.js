@@ -1,26 +1,21 @@
 let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
 document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-// --- SIDEBAR TAB SWITCHER ---
+// --- TAB SWITCHING ---
 function showTab(tabId, event) {
-    // Hide all sections
-    document.querySelectorAll('.tab-section').forEach(section => section.classList.remove('active'));
-    // Deactivate all nav buttons
-    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-
-    // Show selected section
+    document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     document.getElementById(tabId + '-tab').classList.add('active');
-    // Highlight clicked button
     event.currentTarget.classList.add('active');
 }
 
-// --- ASSIGNMENT LOGIC ---
+// --- ASSIGNMENT TRACKER ---
 function addAssignment() {
     const name = document.getElementById('taskInput').value;
     const date = document.getElementById('dateInput').value;
     const priority = parseInt(document.getElementById('priorityInput').value);
 
-    if (!name || !date) return alert("Please fill in all fields.");
+    if (!name || !date) return alert("Fill in all fields!");
 
     assignments.push({ id: Date.now(), name, date, priority });
     saveAndRender();
@@ -29,12 +24,12 @@ function addAssignment() {
 }
 
 function saveAndRender() {
-    // Sort by Date, then by Priority
+    // Multi-level sort: Date first, then Priority
     assignments.sort((a, b) => {
         const d1 = new Date(a.date);
         const d2 = new Date(b.date);
         if (d1 - d2 !== 0) return d1 - d2;
-        return b.priority - a.priority;
+        return b.priority - a.priority; // High (3) above Low (1)
     });
 
     localStorage.setItem('assignments', JSON.stringify(assignments));
@@ -45,15 +40,14 @@ function renderTable() {
     const list = document.getElementById('taskList');
     list.innerHTML = "";
     assignments.forEach(task => {
-        const prioNames = {3: 'High', 2: 'Medium', 1: 'Low'};
-        const prioClass = {3: 'prio-3', 2: 'prio-2', 1: 'prio-1'}; // Use your existing badge classes
+        const pNames = {3: 'High', 2: 'Medium', 1: 'Low'};
         list.innerHTML += `
             <tr>
                 <td style="font-weight:600">${task.name}</td>
                 <td>${task.date}</td>
-                <td><span class="badge ${prioClass[task.priority]}">${prioNames[task.priority]}</span></td>
+                <td><span class="badge prio-${task.priority}">${pNames[task.priority]}</span></td>
                 <td style="text-align:right">
-                    <button onclick="deleteTask(${task.id})" class="btn-secondary" style="color:#ef4444">Done</button>
+                    <button onclick="deleteTask(${task.id})" class="btn-secondary" style="color:#ef4444; padding: 5px 10px;">Done</button>
                 </td>
             </tr>`;
     });
@@ -64,8 +58,9 @@ function deleteTask(id) {
     saveAndRender();
 }
 
-// --- TIMER LOGIC ---
+// --- TIMER & PROGRESS BAR ---
 let timer;
+let totalTime = 1500; // 25 minutes
 let timeLeft = 1500;
 let isRunning = false;
 
@@ -75,32 +70,39 @@ function toggleTimer() {
         clearInterval(timer);
         btn.innerText = "Start";
     } else {
+        btn.innerText = "Pause";
         timer = setInterval(() => {
-            timeLeft--;
-            updateTimerDisplay();
-            if (timeLeft <= 0) {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTimerUI();
+            } else {
                 clearInterval(timer);
-                alert("Study session over!");
+                alert("Time's up!");
                 resetTimer();
             }
         }, 1000);
-        btn.innerText = "Pause";
     }
     isRunning = !isRunning;
 }
 
-function updateTimerDisplay() {
+function updateTimerUI() {
+    // Update Text
     const m = Math.floor(timeLeft / 60);
     const s = timeLeft % 60;
     document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+    
+    // Update Progress Bar
+    const percent = ((totalTime - timeLeft) / totalTime) * 100;
+    document.getElementById('progress-bar').style.width = percent + "%";
 }
 
 function resetTimer() {
     clearInterval(timer);
     isRunning = false;
-    timeLeft = 1500;
-    updateTimerDisplay();
+    timeLeft = totalTime;
+    updateTimerUI();
     document.getElementById('start-btn').innerText = "Start";
 }
 
+// Initial Run
 renderTable();
