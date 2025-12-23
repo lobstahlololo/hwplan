@@ -76,6 +76,56 @@ function deleteTask(id) {
     assignments = assignments.filter(task => task.id !== id);
     saveAndRender();
 }
+// --- Tab Switching Logic ---
+function showTab(tabName) {
+    // Hide all contents
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+    // Show selected
+    document.getElementById(tabName + '-tab').classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+
+// --- Pomodoro Timer Logic ---
+let timer;
+let timeLeft = 1500; // 25 minutes in seconds
+let isRunning = false;
+
+function updateTimerDisplay() {
+    const mins = Math.floor(timeLeft / 60);
+    const secs = timeLeft % 60;
+    document.getElementById('timer-display').innerText = 
+        `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+function toggleTimer() {
+    if (isRunning) {
+        clearInterval(timer);
+        document.getElementById('start-btn').innerText = "Start";
+    } else {
+        timer = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert("Time's up! Take a break.");
+                resetTimer();
+            }
+        }, 1000);
+        document.getElementById('start-btn').innerText = "Pause";
+    }
+    isRunning = !isRunning;
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    isRunning = false;
+    timeLeft = 1500;
+    updateTimerDisplay();
+    document.getElementById('start-btn').innerText = "Start";
+}
 
 // Initial render when the page first loads
 renderTable();
+
