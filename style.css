@@ -19,164 +19,76 @@ body {
     padding: 40px 20px;
 }
 
-.app-container {
-    width: 100%;
-    max-width: 800px;
-}
+.app-container { width: 100%; max-width: 800px; }
 
-header {
-    margin-bottom: 30px;
-    text-align: center;
-}
-/* Tab Navigation */
+/* Tabs Navigation */
 .tab-nav {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 30px;
 }
 
 .tab-btn {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
     background: #e2e8f0;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
     font-weight: 600;
     color: #64748b;
-    transition: 0.3s;
+    transition: all 0.2s;
 }
 
 .tab-btn.active {
     background: var(--primary);
     color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
-/* Timer Styling */
-.timer-card {
-    background: var(--card);
-    padding: 40px;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-}
+/* Common UI Elements */
+header { text-align: center; margin-bottom: 30px; }
+header h1 { margin: 0; font-size: 28px; }
+header p { color: #64748b; margin-top: 5px; }
 
-#timer-display {
-    font-size: 80px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: var(--primary);
-}
-
-.timer-controls button {
-    margin: 0 10px;
-    padding: 12px 30px;
-    border-radius: 8px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-#start-btn { background: var(--primary); color: white; }
-#reset-btn { background: #f1f5f9; color: var(--text); }
-
-header h1 { margin: 0; font-weight: 700; color: #0f172a; }
-
-/* The Input Card */
-.input-card {
+.input-card, .timer-card {
     background: var(--card);
     padding: 24px;
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+/* Tracker Styles */
 .input-card input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-    font-size: 16px;
+    width: 100%; padding: 12px; border: 1px solid #e2e8f0;
+    border-radius: 8px; margin-bottom: 15px; box-sizing: border-box;
 }
 
-.input-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 12px;
-}
-
-input, select {
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    outline-color: var(--primary);
-}
+.input-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; }
 
 .add-btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s;
+    background: var(--primary); color: white; border: none;
+    padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
 }
 
-.add-btn:hover { transform: translateY(-1px); background: #4f46e5; }
+.table-container { background: var(--card); border-radius: 16px; overflow: hidden; margin-top: 20px; }
+table { width: 100%; border-collapse: collapse; }
+th { background: #f1f5f9; padding: 16px; text-align: left; font-size: 12px; color: #64748b; }
+td { padding: 16px; border-bottom: 1px solid #f1f5f9; }
 
-/* The Table */
-.table-container {
-    background: var(--card);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background: #f1f5f9;
-    padding: 16px;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #64748b;
-}
-
-td {
-    padding: 16px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-/* Priority Pills */
-.badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
+.badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
 .prio-3 { background: #fee2e2; color: var(--high); }
 .prio-2 { background: #fef3c7; color: var(--med); }
 .prio-1 { background: #dcfce7; color: var(--low); }
 
-.done-btn {
-    background: none;
-    border: 1px solid #e2e8f0;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #94a3b8;
+/* Timer Styles */
+.timer-card { text-align: center; padding: 50px; }
+#timer-display { font-size: 100px; font-weight: 700; color: var(--primary); margin-bottom: 30px; }
+.timer-controls button {
+    padding: 15px 35px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; margin: 0 10px;
 }
-
-.done-btn:hover { background: #fee2e2; border-color: #fca5a5; color: var(--high); }
-
+#start-btn { background: var(--primary); color: white; }
+#reset-btn { background: #f1f5f9; color: var(--text); }
