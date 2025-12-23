@@ -8,17 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <aside class="sidebar">
-    <div class="logo">Study</div>
-    <nav class="side-nav">
-        <button class="nav-item active" onclick="showTab('tracker', event)">
-            Assignments
-        </button>
-        <button class="nav-item" onclick="showTab('timer', event)">
-            Focus Timer
-        </button>
-    </nav>
-</aside>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="logo">Study</div>
+            <nav class="side-nav">
+                <button class="nav-item active" onclick="showTab('tracker', event)">Assignments</button>
+                <button class="nav-item" onclick="showTab('timer', event)">Focus Timer</button>
+            </nav>
+        </aside>
 
         <main class="main-content">
             <section id="tracker-tab" class="tab-section active">
@@ -26,7 +23,6 @@
                     <h1>Assignments</h1>
                     <p id="date-display"></p>
                 </header>
-                
                 <div class="card input-card">
                     <input type="text" id="taskInput" placeholder="New assignment name...">
                     <div class="input-row">
@@ -39,7 +35,6 @@
                         <button onclick="addAssignment()" class="btn-primary">Add Task</button>
                     </div>
                 </div>
-
                 <div class="card table-card">
                     <table>
                         <thead>
@@ -50,5 +45,28 @@
                                 <th style="text-align: right;">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="taskList">
+                        <tbody id="taskList"></tbody>
+                    </table>
+                </div>
+            </section>
 
+            <section id="timer-tab" class="tab-section">
+                <header class="content-header">
+                    <h1>Focus Timer</h1>
+                    <div class="card timer-container">
+                        <div class="progress-wrapper">
+                            <div id="progress-bar"></div>
+                        </div>
+                        <div id="timer-display">25:00</div>
+                        <div class="timer-btns">
+                            <button onclick="toggleTimer()" id="start-btn" class="btn-primary">Start</button>
+                            <button onclick="resetTimer()" class="btn-secondary">Reset</button>
+                        </div>
+                    </div>
+                </header>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
