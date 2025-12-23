@@ -23,6 +23,7 @@
                     <h1>Assignments</h1>
                     <p id="date-display"></p>
                 </header>
+                
                 <div class="card input-card">
                     <input type="text" id="taskInput" placeholder="New assignment name...">
                     <div class="input-row">
@@ -35,6 +36,7 @@
                         <button onclick="addAssignment()" class="btn-primary">Add Task</button>
                     </div>
                 </div>
+
                 <div class="card table-card">
                     <table>
                         <thead>
@@ -53,17 +55,18 @@
             <section id="timer-tab" class="tab-section">
                 <header class="content-header">
                     <h1>Focus Timer</h1>
-                    <div class="card timer-container">
-                        <div class="progress-wrapper">
-                            <div id="progress-bar"></div>
-                        </div>
-                        <div id="timer-display">25:00</div>
-                        <div class="timer-btns">
-                            <button onclick="toggleTimer()" id="start-btn" class="btn-primary">Start</button>
-                            <button onclick="resetTimer()" class="btn-secondary">Reset</button>
-                        </div>
-                    </div>
+                    <p>Pomodoro Technique: 25 mins work</p>
                 </header>
+                <div class="card timer-container">
+                    <div class="progress-wrapper">
+                        <div id="progress-bar"></div>
+                    </div>
+                    <div id="timer-display">25:00</div>
+                    <div class="timer-btns">
+                        <button onclick="toggleTimer()" id="start-btn" class="btn-primary">Start</button>
+                        <button onclick="resetTimer()" class="btn-secondary">Reset</button>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
